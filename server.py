@@ -14,6 +14,20 @@ class Database(tornado.web.RequestHandler):
 		s.Close()
 
 class Bat(tornado.web.RequestHandler):
+	def put(self):
+		try:
+			s = Stock()
+			price = self.get_argument('price','')
+			quantity = self.get_argument('quantity','')
+			if(price!=''):
+				s.setBatPrice(float(price))
+				
+			if(quantity!=''):
+				s.setBatQuantity(int(quantity))
+			self.write("OK")
+		except Exception as e:
+			print(e)
+
 	def get(self):
 		try:
 			s = Stock()
@@ -21,15 +35,14 @@ class Bat(tornado.web.RequestHandler):
 			reply = ""
 			price = self.get_argument('price','')
 			quantity = self.get_argument('quantity','')
-			value = self.get_argument('value','')
 			if(price=='true'):
-				reply += "Bat unit price: "
-			elif(price!=''):
-				reply += "Setting price"
+				#Get the bat unit price
+				price = s.getItemPrice('bat')
+				reply += "bat unit price: " + str(price)
 			if(quantity=='true'):
-				reply += "Bat quantity: "
-			elif(quantity!=''):
-				reply += "Setting quantity"
+				#Get the bat quantity
+				quantity = s.getItemQuantity('bat')
+				reply += "bat stock level: " + str(quantity)
 			if(reply==""):
 				reply = "OK"
 			self.write(reply)
@@ -37,6 +50,20 @@ class Bat(tornado.web.RequestHandler):
 		except Exception as e:
 			print(e)
 class Egg(tornado.web.RequestHandler):
+	def put(self):
+		try:
+			s = Stock()
+			price = self.get_argument('price','')
+			quantity = self.get_argument('quantity','')
+			value = self.get_argument('value','')
+			if(price!=''):
+				s.setEggPrice(float(price))
+			if(quantity!=''):
+				s.setEggQuantity(int(quantity))
+			self.write("OK")
+		except Exception as e:
+			print(e)	
+	
 	def get(self):
 		try:
 			s = Stock()
@@ -46,13 +73,12 @@ class Egg(tornado.web.RequestHandler):
 			quantity = self.get_argument('quantity','')
 			value = self.get_argument('value','')
 			if(price=='true'):
-				reply += "Egg unit price: "
-			elif(price!=''):
-				reply += "setting price"
+				#Get the egg unit price
+				price = s.getItemPrice('egg')
+				reply += "egg unit price: " + str(price)
 			if(quantity=='true'):
-				reply += "Egg quantity: "
-			elif(quantity!=''):
-				reply += "setting quantity"
+				quantity = s.getItemQuantity('egg')
+				reply += "egg stock level: " + str(quantity)
 			if(reply==""):
 				reply = "OK"
 			self.write(reply)

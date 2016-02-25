@@ -13,8 +13,6 @@ class Stock:
 				self.cursor = self.db.cursor()
 				#Attempt to create stocks table
 				self.createTable()
-				#Close db
-				self.Close()
 			#Else - dump
 			else:
 				#Open the database
@@ -22,8 +20,6 @@ class Stock:
 				#Init cursor
 				self.cursor = self.db.cursor()
 				print("display")
-				self.Reset()
-				self.Close()
 		except Exception as e:
 			print("exception caught")
 			print(e)
@@ -93,7 +89,7 @@ class Stock:
 		try:
 			if(self.cursor!=None and self.db!=None and name!=None):
 				self.cursor.execute("SELECT quantity FROM stockData WHERE name = " + "'" + str(name) + "'")
-				return self.cursor.fetchone()
+				return self.cursor.fetchone()[0]
 			else:
 				print("null cursor, or db, or data")
 		except Exception as e:
@@ -105,12 +101,24 @@ class Stock:
 		try:
 			if(self.cursor!=None and self.db!=None and name!=None):
 				self.cursor.execute("SELECT price FROM stockData WHERE name = " + "'" + str(name) + "'")
-				return self.cursor.fetchone()
+				return self.cursor.fetchone()[0]
 			else:
 				print("null cursor,or db, or data")
 		except Exception as e:
 			print("exception caught")
-			print(e) 
+			print(e)
+	#Get total item price
+	def getItemTotal(self,name):
+		try:
+			itemstr = str(name)
+			price = float(getItemPrice(itemstr))
+			quantity = float(getItemQuantity(itemstr))
+			total = price * quantity
+			return total
+		except Exception as e:
+			print("exception caught")
+			print(e)
+	
 	#Set price of bat
 	def setBatPrice(self,price):
 		self.setItemPrice('bat',price)
