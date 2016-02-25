@@ -89,7 +89,9 @@ class Stock:
 		try:
 			if(self.cursor!=None and self.db!=None and name!=None):
 				self.cursor.execute("SELECT quantity FROM stockData WHERE name = " + "'" + str(name) + "'")
-				return self.cursor.fetchone()[0]
+				content = self.cursor.fetchone()[0]
+				_return = int(content)
+				return _return
 			else:
 				print("null cursor, or db, or data")
 		except Exception as e:
@@ -101,7 +103,9 @@ class Stock:
 		try:
 			if(self.cursor!=None and self.db!=None and name!=None):
 				self.cursor.execute("SELECT price FROM stockData WHERE name = " + "'" + str(name) + "'")
-				return self.cursor.fetchone()[0]
+				content = self.cursor.fetchone()[0]
+				_float = format(float(content),'.2f')
+				return _float
 			else:
 				print("null cursor,or db, or data")
 		except Exception as e:
@@ -111,10 +115,12 @@ class Stock:
 	def getItemTotal(self,name):
 		try:
 			itemstr = str(name)
-			price = float(getItemPrice(itemstr))
-			quantity = float(getItemQuantity(itemstr))
+			price = float(self.getItemPrice(itemstr))
+			quantity = float(self.getItemQuantity(itemstr))
 			total = price * quantity
-			return total
+			#format the total
+			_total = format(float(total),'.2f')
+			return _total
 		except Exception as e:
 			print("exception caught")
 			print(e)

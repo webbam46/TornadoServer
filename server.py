@@ -8,6 +8,10 @@ from stock import Stock
 s = None
 
 class Database(tornado.web.RequestHandler):
+	def delete(self):
+		s = Stock()
+		self.write("OK")
+		s.Close()
 	def get(self):
 		s = Stock()
 		self.write("OK")
@@ -35,6 +39,7 @@ class Bat(tornado.web.RequestHandler):
 			reply = ""
 			price = self.get_argument('price','')
 			quantity = self.get_argument('quantity','')
+			value = self.get_argument('value','')
 			if(price=='true'):
 				#Get the bat unit price
 				price = s.getItemPrice('bat')
@@ -43,6 +48,10 @@ class Bat(tornado.web.RequestHandler):
 				#Get the bat quantity
 				quantity = s.getItemQuantity('bat')
 				reply += "bat stock level: " + str(quantity)
+			if(value=='true'):
+				#Get item total value
+				total = s.getItemTotal('bat')
+				reply += "bat total stock value: " + str(total)
 			if(reply==""):
 				reply = "OK"
 			self.write(reply)
@@ -55,7 +64,6 @@ class Egg(tornado.web.RequestHandler):
 			s = Stock()
 			price = self.get_argument('price','')
 			quantity = self.get_argument('quantity','')
-			value = self.get_argument('value','')
 			if(price!=''):
 				s.setEggPrice(float(price))
 			if(quantity!=''):
@@ -79,6 +87,10 @@ class Egg(tornado.web.RequestHandler):
 			if(quantity=='true'):
 				quantity = s.getItemQuantity('egg')
 				reply += "egg stock level: " + str(quantity)
+			if(value=='true'):
+				#Get item total value
+				total = s.getItemTotal('egg')
+				reply += "egg total stock value: " + str(total)
 			if(reply==""):
 				reply = "OK"
 			self.write(reply)
