@@ -23,6 +23,11 @@ class Stock:
 		except Exception as e:
 			print("exception caught")
 			print(e)
+	#Return SQL Iterdump
+	def iterDump(self):
+		return self.db.iterdump()
+		
+
 	#Return whether the database already exists
 	def Exists(self):
 		if(os.path.isfile("stock.db")):

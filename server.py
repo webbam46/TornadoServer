@@ -14,7 +14,10 @@ class Database(tornado.web.RequestHandler):
 		s.Close()
 	def get(self):
 		s = Stock()
-		self.write("OK")
+		_d = s.iterDump()
+		for line in _d:
+			self.write(str(line))
+			self.write("\n")
 		s.Close()
 
 class Bat(tornado.web.RequestHandler):
